@@ -1,0 +1,128 @@
+#Scenario information
+## Junandus Sijabat
+
+#EpidemicWithoutInterest && WithInterest
+#Scenario.name = %%DecisionEngineRouter.decisionEngine%% [%%DecisionEngineRouter.R%%_Node = %%Group.nrofHosts%%, Interest = %%DecisionEngineRouter.Int%%]
+##EpidemicWithInterestCommunity
+Scenario.name = %%DecisionEngineRouter.decisionEngine%% [%%DecisionEngineRouter.R%%_Node = %%Group.nrofHosts%%, Interest = %%DecisionEngineRouter.Int%%, K = %%DecisionEngineRouter.K%%, FamiliarThreshold = %%DecisionEngineRouter.familiarThreshold%%]
+#Scenario.name = tes
+Scenario.simulateConnections = false
+Scenario.updateInterval = 1
+
+Scenario.endTime = 274883
+
+#987529 Haggle Cam
+#274883 Haggle3 Infocom05
+#16981816 Reality
+
+Report.warmup = 1
+Scenario.nrofHostGroups = 1
+
+
+#Interfaces informations
+btInterface.type = SimpleBroadcastInterface
+btInterface.transmitSpeed = 250k
+btInterface.transmitRange = 10
+btInterface.scanInterval = 120
+
+#Group Information
+## Buffer Size : 200 messages of 10 K ~ 2M
+Group.bufferSize = 30M
+
+##Interest router
+Group.router = DecisionEngineRouter
+DecisionEngineRouter.R = [1;2;3;4;5]
+#Group.router = EpidemicRouter
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithoutInterest
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterest
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunity
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunityAndLocalCommunity
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunityAndLocalCommunityImproved
+DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunityAndLocalCommunityImprovedCentrality
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunityAndProportioning
+#DecisionEngineRouter.decisionEngine = interest.EpidemicWithInterestCommunityCentrality
+
+DecisionEngineRouter.communityDetectAlg = routing.community.KCliqueCommunityDetection
+DecisionEngineRouter.K = 3
+
+
+##FT second 21600=6jam 1800=30minutes 10800=3 jam, 5400=90 minutes
+DecisionEngineRouter.familiarThreshold = 1800
+Group.nodeList = [nella:0,22,2,13,26,15,6,28,39,19,32/luna:12,24,3,25,5,27,29,7,40,31/via:11,33,35,36,16,38,17,8,20,21/maya:34,1,23,14,4,37,18,9,30,10;nella:22,34,12,35,24,16,38,6,40,20,31/luna:1,3,36,25,37,39,18,29,8,9/via:0,13,14,26,15,5,28,17,32,21/maya:11,33,23,2,4,27,7,19,30,10;nella:11,12,13,2,14,26,4,28,8,9,20/luna:22,33,35,24,36,38,17,29,19,30/via:0,1,23,3,15,16,5,18,7,31/maya:34,25,37,27,6,39,40,10,32,21;nella:0,1,13,3,37,4,26,17,19,30,20/luna:11,23,36,5,27,16,29,18,31,32/via:22,12,2,24,14,38,28,39,8,21/maya:33,34,35,25,15,6,7,9,40,10;nella:33,22,11,34,24,37,38,5,39,19,21/luna:0,1,35,14,36,3,40,20,32,10/via:23,12,27,16,6,17,7,29,30,31/maya:13,2,25,4,26,15,28,18,8,9]
+DecisionEngineRouter.Int = 4
+##luna, icha, ratna, maya, via
+
+## TTL 24 hours=1440, 1 week= 10080, 3 weeks= 30240, 12 Hours = 720
+Group.msgTtl = 720
+Group.nrofInterfaces = 1
+Group.interface1 = btInterface
+Group.nrofHosts = 41
+
+#Group1 Information
+Group1.groupID = A
+Group.waitTime = 10, 30 
+Group.speed = 0.8, 1.4
+
+#36 Haggle Cam
+#41 Haggle
+#97 Reality
+Group.nodeLocation = 10, 10
+Group.movementModel = StationaryMovement
+#StationaryMovement gerak diam
+
+#How many event generator
+Events.nrof = 2
+
+## Trace information
+Events1.class = ExternalEventsQueue
+Events1.filePath = Haggle3-Infocom5.txt
+#Events1.filePath = Haggle4-Cam-Imote.csv
+#RealityConnectionTraceRevised.txt
+#Haggle4-Cam-Imote.csv
+#Haggle3-Infocom5.txt 
+#RealityConnectionTraceFinal.txt
+
+
+## Message creation parameters
+Events2.class = MessageEventGenerator
+#Events2.interval = 58, 62 
+Events2.interval = 290, 310 
+#97, 103
+# 25,30 (~120 texts/hour) 
+# 290, 310 (~12 texts/hour)
+# 580, 620 (~ 6 texts/hour)
+Events2.size = 10k
+
+## range of message source/destination address 
+Events2.hosts = 0, 40
+# 0, 35 Haggle Cam
+# 0,40 Haggle
+# 0,96 Reality
+Events2.prefix = M
+
+# World's size for Movement Models without implicit size (width, height; meters) 
+## Default (haggle) [100,100]
+MovementModel.worldSize = 100, 100
+MovementModel.warmup = 1
+
+# seed for movement models' pseudo random number generator (default = 0)
+## [2; 8372; 98092; 18293; 777]
+MovementModel.rngSeed = 2
+
+
+#ReportsInformations
+Report.nrofReports =6
+
+#Report.reportDir = reports/
+Report.reportDir = reports/Suryo/Revisi/Haggle03-Infocom5
+#Report classes to load
+
+##Report EpidemicWithoutInterest
+Report.report1 = AllReport
+Report.report2 = ConvergenceReport
+Report.report3 = CommunityDetectionReport
+Report.report4 = CreatedMessagesReportInterest
+Report.report5 = NodeInterestReport
+Report.report6 = ResidueInterestReport
+
+
